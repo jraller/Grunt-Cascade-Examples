@@ -1,0 +1,23 @@
+{
+  "name": "Grunt-Cascade-Examples",
+  "version": "0.0.1",
+  "description": "a set of examples and test code for accessing Cascade Server Web Services in NodeJS",
+  "main": "Gruntfile.js",
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "soap-cascade": "0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jraller/Grunt-Cascade-Examples.git"
+  },
+  "author": "Jason Aller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jraller/Grunt-Cascade-Examples/issues"
+  }
+}
