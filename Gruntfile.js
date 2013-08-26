@@ -38,6 +38,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.loadTasks('tasks');
+	grunt.loadTasks('tasks/listSites');
 
     // Default task.
     grunt.registerTask('default', ['jshint:all']); //, 'nodeunit'
