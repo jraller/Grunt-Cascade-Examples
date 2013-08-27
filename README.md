@@ -101,6 +101,34 @@ to using id once you've obtained them.
 
 Interpreting the returned value of a read is going to be asset type dependant.
 
+#### user
+
+reading users can be accomplished with authentication and :
+
+```
+identifier: {
+	id: '', // where id is the username of the user
+	type: 'user',
+	recycled: 'false'
+}
+```
+
+This will return an object like:
+
+```
+authType="normal",
+defaultGroup={},
+defaultSiteId="IdString",
+defaultSiteName="Jason",
+email={},
+enabled="true",
+fullName="Jason Aller",
+groups="Administrators;ALL_USERS",
+password="passwordHash",
+role="Administrator",
+username="jraller"
+```
+
 ### create
 
 For different assets the call needs different soap arguments.

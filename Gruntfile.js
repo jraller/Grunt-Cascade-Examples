@@ -7,7 +7,8 @@ module.exports = function (grunt) {
         // Task configuration.
 		cascade: {
 			server: 'http://conference.cascadeserver.com', // within the quotes put the full url of your cascade server
-			ws: '/ws/services/AssetOperationService?wsdl' // this is the extension that gets added to your cascade server url
+			ws: '/ws/services/AssetOperationService?wsdl', // this is the extension that gets added to your cascade server url
+			site: 'GruntExample' // change this if for some reason you have or want a site by this name
 		},
         jshint: {
 			all: [
@@ -39,6 +40,7 @@ module.exports = function (grunt) {
 
 	grunt.loadTasks('tasks');
 	grunt.loadTasks('tasks/listSites');
+	grunt.loadTasks('tasks/read');
 
     // Default task.
     grunt.registerTask('default', ['jshint:all']); //, 'nodeunit'
