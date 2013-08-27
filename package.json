@@ -6,7 +6,10 @@
   "dependencies": {
     "grunt": "~0.4.1",
     "soap-cascade": "0.0.4",
-    "inquirer": "~0.2.5"
+    "inquirer": "~0.2.5",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.6.3"
   },
   "devDependencies": {},
   "scripts": {

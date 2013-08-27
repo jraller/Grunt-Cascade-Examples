@@ -15,7 +15,7 @@ Review the code - here you will find examples of each of the web service calls y
 make with documentation and notes about quirks for each call.
 Run the tests - will document as they are written.
 
-To run the first test for instance: `node tasks\client.js`
+To run the first test for instance: `grunt client`
 
 # Lessons and Commentary
 
@@ -27,7 +27,7 @@ The client object contains all the addressing information and generated function
 
 `createClient(urlForWSDL, function (err, client) {})`
 
-* client.js -- setting up a client
+* client.js run with `grunt client` -- setting up a client
 * list-actions.js -- interacting with the client
 
 ## Cascade Specific

@@ -1,30 +1,24 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
         // Task configuration.
+		cascade: {
+			server: 'http://conference.cascadeserver.com', // within the quotes put the full url of your cascade server
+			ws: '/ws/services/AssetOperationService?wsdl' // this is the extension that gets added to your cascade server url
+		},
         jshint: {
-            options: {
-                curly: true,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: true,
-                unused: true,
-                boss: true,
-                eqnull: true,
-                globals: {}
-            },
+			all: [
+				'Gruntfile.js',
+				'tasks/*.js'
+			],
             gruntfile: {
                 src: 'Gruntfile.js'
             },
-            lib_test: {
-                src: ['lib/**/*.js', 'test/**/*.js']
+            options: {
+				jshintrc: '.jshintrc'
             }
         },
         nodeunit: {
@@ -34,10 +28,6 @@ module.exports = function(grunt) {
             gruntfile: {
                 files: '<%= jshint.gruntfile.src %>',
                 tasks: ['jshint:gruntfile']
-            },
-            lib_test: {
-                files: '<%= jshint.libTest.src %>',
-                tasks: ['jshint:libTest', 'nodeunit']
             }
         }
     });
@@ -47,7 +37,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    // Default task.
-    grunt.registerTask('default', ['jshint', 'nodeunit']);
+	grunt.loadTasks('tasks');
 
+    // Default task.
+    grunt.registerTask('default', ['jshint:all']); //, 'nodeunit'
 };
