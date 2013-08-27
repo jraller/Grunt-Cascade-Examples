@@ -49,7 +49,6 @@ module.exports = function (grunt) {
 					grunt.log.writeln('Client created');
 					// note that client a local variable to this anonymous function, later we will assign it to a global variable
 					client.read(soapArgs, function (err, response) { // the client object knows which server to go to
-						var format = 'short';
 						if (err) {
 							grunt.log.writeln('Error reading user: ');
 							grunt.log.writeflags(err);

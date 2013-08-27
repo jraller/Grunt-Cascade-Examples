@@ -101,6 +101,44 @@ to using id once you've obtained them.
 
 Interpreting the returned value of a read is going to be asset type dependant.
 
+#### assetFactory
+#### assetFactoryContainer
+#### connectorContainer
+#### contentType
+#### contentTypeContainer
+#### dataDefinition
+#### dataDefinitionContainer
+#### databaseTransport
+#### destination
+#### facebookConnector
+#### feedBlock
+#### file
+#### fileSystemTransport
+#### folder
+#### ftpTransport
+#### googleAnalyticsConnector
+#### group
+#### indexBlock
+#### metadataSet
+#### metadataSetContainer
+#### page
+#### pageConfigurationSet
+#### pageConfigurationSetContainer
+#### publishSet
+#### publishSetContainer
+#### reference
+#### role
+#### scriptFormat
+#### site
+#### siteDestinationContainer
+#### symlink
+#### target
+#### template
+#### textBlock
+#### transportContainer
+#### twitterConnector
+#### twitterFeedBlock
+
 #### user
 
 reading users can be accomplished with authentication and :
@@ -128,6 +166,14 @@ password="passwordHash",
 role="Administrator",
 username="jraller"
 ```
+
+#### wordPressConnector
+#### workflowConfiguration
+#### workflowDefinition
+#### workflowDefinitionContainer
+#### xhtmlDataDefinitionBlock
+#### xmlBlock
+#### xsltFormat
 
 ### create
 
