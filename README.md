@@ -118,6 +118,15 @@ Interpreting the returned value of a read is going to be asset type dependant.
 #### ftpTransport
 #### googleAnalyticsConnector
 #### group
+
+```
+identifier: {
+  id: 'groupName',
+  type: 'group',
+  recycled: 'false'
+}
+```
+
 #### indexBlock
 #### metadataSet
 #### metadataSetContainer
@@ -130,6 +139,24 @@ Interpreting the returned value of a read is going to be asset type dependant.
 #### role
 #### scriptFormat
 #### site
+
+```
+identifier: {
+  path: {
+    path: 'SiteName'
+  },
+  type: , 'site'
+}
+```
+or
+
+```
+identifier: {
+  id: 'siteIdString'
+  type: , 'site'
+}
+```
+
 #### siteDestinationContainer
 #### symlink
 #### target
@@ -154,17 +181,17 @@ identifier: {
 This will return an object like:
 
 ```
-authType="normal",
-defaultGroup={},
-defaultSiteId="IdString",
-defaultSiteName="Jason",
-email={},
-enabled="true",
-fullName="Jason Aller",
-groups="Administrators;ALL_USERS",
-password="passwordHash",
-role="Administrator",
-username="jraller"
+authType = "normal",
+defaultGroup = {},
+defaultSiteId = "IdString",
+defaultSiteName = "Jason",
+email = {},
+enabled = "true",
+fullName = "Jason Aller",
+groups = "Administrators;ALL_USERS",
+password = "passwordHash",
+role = "Administrator",
+username = "jraller"
 ```
 
 #### wordPressConnector
@@ -237,6 +264,18 @@ Allows you to string together multiple calls.
 ### search
 
 Get a list of assets from the server.
+
+#### user
+
+demo not coded yet.
+
+```
+searchInformation: {
+  matchType: 'match-any',
+  assetName: '*e*', // to search for usernames that start with the letter e, case insensitive
+  searchUsers: 'true'
+}
+```
 
 ### readAccessRights
 
