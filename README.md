@@ -290,6 +290,11 @@ One of the gotcha soapArg cases in that when you supply an `aclEntry` it must be
  * `type`
  * `name`
 
+Another gotcha appears to be that if you send an editAccessRights call that trys to apply the 
+existing permissions to an asset then the callback is never fired because the server doesn't 
+respond. Read the access rights first, compare, if there will be changed then call edit acccess rights.
+It remains to be seen which versions of Cascade Server behave this way, or if this will be fixes.
+
 ### copy
 
 Make a copy of an asset.
