@@ -119,6 +119,8 @@ Interpreting the returned value of a read is going to be asset type dependant.
 #### googleAnalyticsConnector
 #### group
 
+* `grunt readgroup` will run read/read-group.js
+
 ```
 identifier: {
   id: 'groupName',
