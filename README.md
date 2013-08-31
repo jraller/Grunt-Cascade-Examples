@@ -101,8 +101,18 @@ to using id once you've obtained them.
 
 Interpreting the returned value of a read is going to be asset type dependant.
 
-#### assetFactory
 #### assetFactoryContainer
+
+`grunt readassetfactorycontainer` will run read/read-assetFactoryContainer.js and demonstrates why we might need next().
+Note that we are nested several levels deep by the time we get our data to work with. 
+In our next example we'll use `next();`
+
+#### assetFactory
+
+`grunt readassetfactory` will run read/read-assetFactory.js and demonstrates the use of `next();` and `die();`
+
+`die();` just clears out the stack of commands waiting for `next()` to call so that we can gracefully exit when we hit an error.
+
 #### connectorContainer
 #### contentType
 #### contentTypeContainer
