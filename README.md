@@ -114,6 +114,12 @@ In our next example we'll use `next();`
 `die();` just clears out the stack of commands waiting for `next()` to call so that we can gracefully exit when we hit an error.
 
 #### connectorContainer
+
+`grunt readconnectorcontainer` will run tasks/read/read-connectorContainer.js
+
+This example adds more error checking and demonstrates one way to normalize the response from the server for cases where one or more items may be returned.
+Checking to see if the object is not an array with `!Array.isArray()` will warn us that we need to convert it to an array before trying to process it as one.
+
 #### contentType
 #### contentTypeContainer
 #### dataDefinition
