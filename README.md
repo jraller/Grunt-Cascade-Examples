@@ -1,7 +1,7 @@
 Grunt-Cascade-Examples
 ======================
 
-a set of examples and test code for accessing [Cascade Server](http://www.hannonhill.com/) 
+This collection is a set of examples and test code for accessing [Cascade Server](http://www.hannonhill.com/) 
 [Web Services](http://www.hannonhill.com/kb/Web-Services/) in [NodeJS](http://nodejs.org/).
 
 Right now these calls are being written to target version 7.6. 
@@ -11,7 +11,7 @@ You may need to adjust the code to work with other versions.
 Clone this repository to your workstation.
 Run `npm install` to populate the `node_modules` folder. This will install the [soap-cascade library](https://github.com/jraller/soap-cascade) and any other needed resources.
 Edit `Gruntfile.js` and modify the url for your **TEST** Cascade Server - do not use these examples with your production instance.
-Review the code - here you will find examples of each of the web service calls you might want to  
+Review the code - here you will find examples of each of the web service calls you might want to 
 make with documentation and notes about quirks for each call. 
 If you discover additional quirks or techniques clone this repository make changes and send a pull request.
 Run the tests. To run the first test for instance: `grunt client`.
