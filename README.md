@@ -328,7 +328,8 @@ searchInformation: {
 
 ### readAccessRights
 
-For a given asset get the access rights for that asset. A full demo or reading and writing access for assets can be found in cascade-access-tool (check name and link). format: [soap-cascade library](https://github.com/jraller/soap-cascade)
+For a given asset get the access rights for that asset. 
+A full demo or reading and writing access for assets can be found in (cascade-access-tool)[https://github.com/jraller/cascade-access-tool].
 
 ### editAccessRights
 
