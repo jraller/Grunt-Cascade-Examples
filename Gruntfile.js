@@ -41,6 +41,18 @@ module.exports = function (grunt) {
 	grunt.loadTasks('tasks');
 	grunt.loadTasks('tasks/listSites');
 	grunt.loadTasks('tasks/read');
+	grunt.loadTasks('tasks/listMessage');
+	grunt.loadTasks('tasks/lmarkMessage');
+	grunt.loadTasks('tasks/deleteMessage');
+	grunt.loadTasks('tasks/sendMessage');
+	grunt.loadTasks('tasks/delete');
+	grunt.loadTasks('tasks/publish');
+	grunt.loadTasks('tasks/edit');
+	grunt.loadTasks('tasks/batch');
+	grunt.loadTasks('tasks/copy');
+	grunt.loadTasks('tasks/move');
+	grunt.loadTasks('tasks/search');
+	grunt.loadTasks('tasks/siteCopy');
 
     // Default task.
     grunt.registerTask('default', ['jshint:all']); //, 'nodeunit'

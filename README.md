@@ -275,23 +275,40 @@ asset {
 }
 ```
 
+### listMessages
+
+N/A fc
+
+### markMessage
+
+N/A fc
+
+### deleteMessage
+
+N/A fc
+
+### sendMessage
+
+N/A fc
 
 ### delete
 
-Remove an asset from the server.
+Remove an asset from the server. fc
 
 ### publish
 
-Trigger a publish
+Trigger a publish fc
 
 ### edit
 
 When calling `edit` it usually makes sense to first call `read`, but beware that you may 
 have to make changes to the structure of your soapArgs.
 
+edit-file.js fc
+
 ### batch
 
-Allows you to string together multiple calls.
+Allows you to string together multiple calls. fc
 
 ### search
 
@@ -299,7 +316,7 @@ Get a list of assets from the server.
 
 #### user
 
-demo not coded yet.
+search-use.js fc demo not coded yet.
 
 ```
 searchInformation: {
@@ -311,7 +328,7 @@ searchInformation: {
 
 ### readAccessRights
 
-For a given asset get the access rights for that asset.
+For a given asset get the access rights for that asset. A full demo or reading and writing access for assets can be found in cascade-access-tool (check name and link). format: [soap-cascade library](https://github.com/jraller/soap-cascade)
 
 ### editAccessRights
 
@@ -327,15 +344,15 @@ It remains to be seen which versions of Cascade Server behave this way, or if th
 
 ### copy
 
-Make a copy of an asset.
+copy.js Make a copy of an asset. fc
 
 ### siteCopy
 
-Copy a site.
+siteCopy.js fc Copy a site.
 
 ### move
 
-Move or rename an asset.
+move.js fc Move or rename an asset.
 
 ### readWorkflowSettings
 
@@ -346,22 +363,6 @@ N/A
 N/A
 
 ### listSubscribers
-
-N/A
-
-### listMessages
-
-N/A
-
-### markMessage
-
-N/A
-
-### deleteMessage
-
-N/A
-
-### sendMessage
 
 N/A
 

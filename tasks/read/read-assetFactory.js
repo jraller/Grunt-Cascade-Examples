@@ -1,5 +1,7 @@
 /*jslint node:true */
 
+// to follow execution path jump to #01
+
 'use strict';
 
 var grunt = {},
@@ -64,6 +66,7 @@ function die() {
 	nextList = []; //clear out any other tasks we have planned as we have hit an error
 }
 
+// #11
 function readAssetFactory(path) {
 	soapArgs.identifier.path.path = path;
 	soapArgs.identifier.type = 'assetfactory';
@@ -75,11 +78,12 @@ function readAssetFactory(path) {
 		} else {
 //			grunt.log.writeflags(response.readReturn.asset.assetFactory);
 			grunt.log.writeln(response.readReturn.asset.assetFactory.name + ' has a workflow of ' + response.readReturn.asset.assetFactory.workflowMode);
-			next();
+			next(); // #12 will either jump to #11 or execute #13
 		}
 	});
 }
 
+// #09
 // readDefaultContainer will call readAssetFactory once for each assetFactory it contains
 function readDefaultContainer(siteNamePassed) {
 	soapArgs.identifier.path.siteName = siteNamePassed; // we catch the passed variable
@@ -95,9 +99,9 @@ function readDefaultContainer(siteNamePassed) {
 				grunt.log.writeln('AssetFactoryContainer: ');
 				response.readReturn.asset.assetFactoryContainer.children.child.forEach(function (child) {
 //					grunt.log.writeln(child.path.path + ' - ' + child.type);
-					calls[i++] = [readAssetFactory, child.path.path];
+					calls[i++] = [readAssetFactory, child.path.path]; // here we are adding calls to be made in a single exit call to next.
 				});
-				next(calls);
+				next(calls); // #10 when we call next this time the number of items to be added to the stack depends on how many items are in the default container.
 			} else {
 				grunt.log.writeln('Cascade responded with: ');
 				grunt.log.writeln(response.readReturn.message);
@@ -108,6 +112,7 @@ function readDefaultContainer(siteNamePassed) {
 	});
 }
 
+// #07
 function listSites() {
 	client.listSites({authentication: soapArgs.authentication}, function (err, response) { // we strip out from soapArgs just the part we need
 		if (err) {
@@ -116,45 +121,51 @@ function listSites() {
 			next(done);
 		} else {
 			grunt.log.writeln('listSites returned');
-			next(readDefaultContainer, response.listSitesReturn.sites.assetIdentifier[0].path.path);
+			 // this call to next adds to the stack
+			 // we are passing in the name of the first site in the site list
+			next(readDefaultContainer, response.listSitesReturn.sites.assetIdentifier[0].path.path); // #08
 		}
 	});
 }
 
+// #05
 function createClient() {
 	var url = grunt.config('cascade.server'),
 		ws = grunt.config('cascade.ws');
 	soap.createClient(url + ws, function (err, clientObj) {
-		if (err) {
+		if (err) { // this if statement decides if  we stop now or continue on
 			grunt.log.writeln('Error creating client: ' + err.message);
 			die();
 			next(done);
 		} else {
 			grunt.log.writeln('Client created');
 			client = clientObj; // here we save the client out as a global object that survives between callbacks
-			next();
+			next(); // #06 leaving createClient callback to go to next which should execute listSites
 		}
 	});
 }
 
+// #03
 function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
-		next();
+		next(); // #04 leaving inquirer callback to go to next which should call createClient
 	});
 }
 
+
+// execution #01
 module.exports = function (gruntObj) {
 	gruntObj.registerTask('readassetfactory', 'call the read action and get several asset factories', function () {
 		grunt = gruntObj;
-		done = this.async();
-		next([
+		done = this.async(); // save this as the last call we will make. It tells Grunt that we are finished with our async calls.
+		next([ // #02 next gets called the first time
 			[bugUser], // these need to modify global variables
 			[createClient],
 			[listSites], // we will call readDefaultContainer when we pick a site
 			[grunt.log.writeln, 'all our tasks are done'],
-			[done] // when we get finished doing our thing we let grunt know we are done
+			[done] // when we get finished doing our thing we let grunt know we are done. #13 is the last call made in our code as it tells Grunt we are done.
 		]);
 	});
 };
