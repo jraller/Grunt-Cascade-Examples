@@ -143,7 +143,7 @@ function bugUser() {
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('readconnectorcontainer', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('delete', 'call the read action for the default connector container', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([
