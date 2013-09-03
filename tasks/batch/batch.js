@@ -4,27 +4,15 @@
 
 This will simulate setting up a new site according to a recipe.
 Run it against an empty site.
+Due to how create works if you run it twice it will make duplicates of each folder and file with a number appended to the end of their name.
+If you were writing this for production you'd want to do something closer to the code in grunt-cascade-deploy: https://github.com/jraller/grunt-cascade-deploy
 
-make _internal folder
-	make internal blocks folder -- which will be relying on the existence of _internal being in place. Order of execution.
-	make internal templates folder
-		make simple page template
-make css folder
-	make default.css file
-make js folder
+make _fred folder
+	make internal sally folder -- which will be relying on the existence of _fred being in place. Order of execution.
 
 for additional tasks look to the other examples.
 
 */
-
-
-/*
-
-REWRITE
-
-*/
-
-
 
 var grunt = {},
 	done,
@@ -36,14 +24,6 @@ var grunt = {},
 		authentication: {
 			password: '',
 			username: ''
-		},
-		identifier: {
-			path: {
-				path: '',
-				siteName: ''
-			},
-			type: 'connectorcontainer',
-			recycled: 'false'
 		}
 	},
 	questions = [
@@ -63,7 +43,8 @@ var grunt = {},
 			name: 'siteName',
 			message: 'Sitename: '
 		}
-	];
+	],
+	siteName;
 
 function next() {
 	var todo,
@@ -93,29 +74,61 @@ function die() {
 	nextList = [];
 }
 
-function readConnectorContainer() {
-	client.read(soapArgs, function (err, response) {
+function makeSite() {
+	var action = {},
+		results = [
+			'checkOutResult',
+			'createResult',
+			'listMessagesResult',
+			'operationResult',
+			'readAccessRightsResult',
+			'readAuditsResult',
+			'readResult',
+			'readWorkflowInformationResult',
+			'searchResult'
+		],
+		batchCount = 0;
+	soapArgs.operation = [];
+	action.create = {};
+	action.create.asset = {};
+	action.create.asset.folder = {};
+	action.create.asset.folder.name = '_fred';
+	action.create.asset.folder.parentFolderPath = '/';
+	action.create.asset.folder.siteName = siteName;
+	soapArgs.operation.push(action);
+
+	action = {}; // action must be cleared in order to not muck about via reference what we've already pushed to the array
+	action.create = {};
+	action.create.asset = {};
+	action.create.asset.folder = {};
+	action.create.asset.folder.name = 'sally';
+	action.create.asset.folder.parentFolderPath = '/_fred';
+	action.create.asset.folder.siteName = siteName;
+	soapArgs.operation.push(action);
+
+	client.batch(soapArgs, function (err, response) {
+		grunt.log.writeln(client.lastRequest);
+		grunt.log.writeflags(response);
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
+			grunt.log.writeln('Error with batch: ' + err.message);
 			die();
 			next(done);
-		} else {
-			grunt.log.writeln('connector containers returned:');
-			if (response.readReturn.success.toString() === 'true') {
-				grunt.log.writeln('connector containers named ' + response.readReturn.asset.connectorContainer.name);
-				if (response.readReturn.asset.connectorContainer.children && response.readReturn.asset.connectorContainer.children.child) {
-					if (!Array.isArray(response.readReturn.asset.connectorContainer.children.child)) {
-						response.readReturn.asset.connectorContainer.children.child = [response.readReturn.asset.connectorContainer.children.child];
-					}
-					response.readReturn.asset.connectorContainer.children.child.forEach(function (child) {
-						grunt.log.writeln('connector named ' + child.path.path + ' of type ' + child.type);
-					});
-				} else {
-					grunt.log.writeln('it was empty of connectors');
-				}
-			} else {
-				grunt.log.writeln(response.readReturn.message);
+		} else { // this is not yet well written, but provided as a framework to build on
+			grunt.log.writeln('batch run:');
+			if (!Array.isArray(response.batchReturn)) {
+				response.batchReturn = [response.batchReturn];
 			}
+			response.batchReturn.forEach(function (report) {
+				results.forEach(function (resultType) {
+					if (report[resultType].success) { // did the reply mention the success of this resultType
+						if (report[resultType].success.toString() === 'true') { // was it successful
+							grunt.log.writeln('a call to ' + resultType + ' was successful and type specific output is possible');
+						} else { // or not successful
+							grunt.log.writeln('There was an issue with ' + resultType + ' that sent the message:' + report[resultType].messsage);
+						}
+					}
+				});
+			});
 		}
 	});
 }
@@ -130,7 +143,7 @@ function createClient() {
 			next(done);
 		} else {
 			grunt.log.writeln('Client created');
-			client = clientObj; // here we save the client out as a global object that survives between callbacks
+			client = clientObj;
 			next();
 		}
 	});
@@ -140,7 +153,7 @@ function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
-		soapArgs.identifier.path.siteName = answers.siteName;
+		siteName = answers.siteName;
 		next();
 	});
 }
@@ -150,11 +163,11 @@ module.exports = function (gruntObj) {
 		grunt = gruntObj;
 		done = this.async();
 		next([
-			[bugUser], // these need to modify global variables
+			[bugUser],
 			[createClient],
-			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
+			[makeSite],
 			[grunt.log.writeln, 'all our tasks are done'],
-			[done] // when we get finished doing our thing we let grunt know we are done
+			[done]
 		]);
 	});
 };
