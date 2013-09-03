@@ -41,8 +41,8 @@ module.exports = function (grunt) {
 	grunt.loadTasks('tasks');
 	grunt.loadTasks('tasks/listSites');
 	grunt.loadTasks('tasks/read');
-	grunt.loadTasks('tasks/listMessage');
-	grunt.loadTasks('tasks/lmarkMessage');
+	grunt.loadTasks('tasks/listMessages');
+	grunt.loadTasks('tasks/markMessage');
 	grunt.loadTasks('tasks/deleteMessage');
 	grunt.loadTasks('tasks/sendMessage');
 	grunt.loadTasks('tasks/delete');

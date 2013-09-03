@@ -6,7 +6,7 @@
 
 /*
 
-REWRITE
+REWRITE started
 
 */
 
@@ -22,14 +22,6 @@ var grunt = {},
 		authentication: {
 			password: '',
 			username: ''
-		},
-		identifier: {
-			path: {
-				path: '',
-				siteName: ''
-			},
-			type: 'connectorcontainer',
-			recycled: 'false'
 		}
 	},
 	questions = [
@@ -37,23 +29,12 @@ var grunt = {},
 			type: 'input',
 			name: 'username',
 			message: 'Username: ',
-			'default': 'mightysheldor'
+			'default': 'yourUsernameHereIfYouWant'
 		},
 		{
 			type: 'password',
 			name: 'password',
 			message: 'Password: '
-		},
-		{
-			type: 'input',
-			name: 'siteName',
-			message: 'Sitename: '
-		},
-		{
-			type: 'input',
-			name: 'connectorContainerName',
-			message: 'connector folder name: ',
-			'default': '/'
 		}
 	];
 
@@ -85,28 +66,18 @@ function die() {
 	nextList = [];
 }
 
-function readConnectorContainer() {
-	client.read(soapArgs, function (err, response) {
+function listMessages() {
+	client.listMessages(soapArgs, function (err, response) {
 		if (err) {
 			grunt.log.writeln('Error finding connector container: ' + err.message);
 			die();
 			next(done);
 		} else {
 			grunt.log.writeln('connector containers returned:');
-			if (response.readReturn.success.toString() === 'true') {
-				grunt.log.writeln('connector containers named ' + response.readReturn.asset.connectorContainer.name);
-				if (response.readReturn.asset.connectorContainer.children && response.readReturn.asset.connectorContainer.children.child) {
-					if (!Array.isArray(response.readReturn.asset.connectorContainer.children.child)) {
-						response.readReturn.asset.connectorContainer.children.child = [response.readReturn.asset.connectorContainer.children.child];
-					}
-					response.readReturn.asset.connectorContainer.children.child.forEach(function (child) {
-						grunt.log.writeln('connector named ' + child.path.path + ' of type ' + child.type);
-					});
-				} else {
-					grunt.log.writeln('it was empty of connectors');
-				}
+			if (response.listMessagesReturn.success.toString() === 'true') {
+				grunt.log.writeflags(response.listMessagesReturn);
 			} else {
-				grunt.log.writeln(response.readReturn.message);
+				grunt.log.writeln(response.listMessagesReturn.message);
 			}
 		}
 	});
@@ -132,8 +103,6 @@ function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
-		soapArgs.identifier.path.siteName = answers.siteName;
-		soapArgs.identifier.path.path = answers.connectorContainerName;
 		next();
 	});
 }
@@ -145,7 +114,7 @@ module.exports = function (gruntObj) {
 		next([
 			[bugUser], // these need to modify global variables
 			[createClient],
-			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
+			[listMessages], // we will call readDefaultContainer when we pick a site
 			[grunt.log.writeln, 'all our tasks are done'],
 			[done] // when we get finished doing our thing we let grunt know we are done
 		]);

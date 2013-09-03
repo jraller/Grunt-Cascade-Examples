@@ -35,7 +35,7 @@ var grunt = {},
 			type: 'input',
 			name: 'username',
 			message: 'Username: ',
-			'default': 'mightysheldor'
+			'default': 'yourUsernameHereIfYouWant'
 		},
 		{
 			type: 'password',
