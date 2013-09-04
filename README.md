@@ -308,7 +308,12 @@ edit-file.js fc
 
 ### batch
 
-Allows you to string together multiple calls. fc
+Allows you to string together multiple calls.
+
+`grunt batch` will run tasks/batch/batch.js
+
+There is value in this call, but the functionality of being able to string calls together with `next()` appears to offer more flexibility. 
+The amount of code required to handle errors returned by batch is going to be more complex than handling the errors of single calls.
 
 ### search
 
