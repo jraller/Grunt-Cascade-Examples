@@ -98,6 +98,7 @@ function readConnectorContainer() {
 			} else {
 				grunt.log.writeln(response.readReturn.message);
 			}
+			next();
 		}
 	});
 }

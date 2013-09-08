@@ -93,6 +93,7 @@ function listMessages() {
 			} else {
 				grunt.log.writeln('Failed to return messages: ' + response.listMessagesReturn.message);
 			}
+			next();
 		}
 	});
 }
@@ -129,7 +130,7 @@ module.exports = function (gruntObj) {
 			[bugUser],
 			[createClient],
 			[listMessages],
-			[grunt.log.writeln, 'all our tasks are done'],
+//			[grunt.log.writeln, 'all our tasks are done'], // commented out because I need to turn all of these into report() calls so that they call next() after the grunt.log.writeln so we exit well
 			[done]
 		]);
 	});
