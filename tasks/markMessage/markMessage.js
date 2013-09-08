@@ -78,28 +78,39 @@ function report(message) {
 	next();
 }
 
-function handleError(err) {
-	die(); // this error handler is not designed for recovery, but graceful exiting, so we die and then display the error message and let Grunt exit
+function handleError(err, caller) {
+	die();
+	if (!caller) {
+		caller = 'A function';
+	}
 	next([
-		[report, handleError.caller.name + ' responded with: ' + err.message],
+		[report, caller + ' responded with: ' + err.message],
 		[done]
 	]);
 }
 
 function markMessage(messageId) {
 	soapArgs.identifier = {};
-	soapArgs.id = messageId;
-	soapArgs.type = 'message';
+	soapArgs.identifier.id = messageId;
+	soapArgs.identifier.type = 'message';
 	soapArgs.markType = readStatusFlip;
 	client.markMessage(soapArgs, function (err, response) {
 		if (err) {
+			handleError(err, 'markMessage');
 		} else {
+			if (response.markMessageReturn.success.toString() === 'true') {
+				report('message ' + messageId + ' was set to ' + readStatusFlip);
+			} else {
+				report('there was a problem with the message ' + messageId + ' which responded with: ' + response.markMessageReturn.message);
+			}
 		}
 	});
 }
 
 function listMessages() {
 	client.listMessages(soapArgs, function (err, response) {
+		var calls = [],
+			i = 0;
 		if (err) {
 			grunt.log.writeln('Error listing Messages: ' + err.message);
 			die();
@@ -122,12 +133,9 @@ function listMessages() {
 						grunt.log.writeln('There were more than one message');
 					}
 					response.listMessagesReturn.messages.message.forEach(function (message) {
-						grunt.log.writeln('From: ' + message.from);
-						grunt.log.writeln('To: ' + message.to);
-						grunt.log.writeln('Subject: ' + message.subject);
-						grunt.log.writeln('Date: ' + message.date);
-						grunt.log.writeln('Body: ' + message.body);
+						calls[i++] = [markMessage, message.id];
 					});
+					next(calls);
 				}
 			} else {
 				grunt.log.writeln('Failed to return messages: ' + response.listMessagesReturn.message);
@@ -162,7 +170,7 @@ function bugUser() {
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('markmessage', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('markmessage', 'mark messages read or unread', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([

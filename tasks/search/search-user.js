@@ -95,10 +95,13 @@ function report(message) {
 	next();
 }
 
-function handleError(err) {
-	die(); // this error handler is not designed for recovery, but graceful exiting, so we die and then display the error message and let Grunt exit
+function handleError(err, caller) {
+	die();
+	if (!caller) {
+		caller = 'A function';
+	}
 	next([
-		[report, handleError.caller.name + ' responded with: ' + err.message],
+		[report, caller + ' responded with: ' + err.message],
 		[done]
 	]);
 }
