@@ -1,16 +1,9 @@
+/*jslint node:true */
+
 'use strict';
 
 // list messages for current user
 //handle none, one, many
-
-
-/*
-
-REWRITE started
-
-*/
-
-
 
 var grunt = {},
 	done,
@@ -69,15 +62,36 @@ function die() {
 function listMessages() {
 	client.listMessages(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
+			grunt.log.writeln('Error listing Messages: ' + err.message);
 			die();
 			next(done);
 		} else {
-			grunt.log.writeln('connector containers returned:');
+			grunt.log.writeln('Messages returned:');
 			if (response.listMessagesReturn.success.toString() === 'true') {
 				grunt.log.writeflags(response.listMessagesReturn);
+				if (!response.listMessagesReturn.messages.message) {
+					// messages: {}, - no messages
+					grunt.log.writeln('There were no messages');
+				} else {
+					grunt.log.writeln('There was at least one message');
+					if (!Array.isArray(response.listMessagesReturn.messages.message)) {
+						// messages: {message: {}},
+						grunt.log.writeln('There was exactly one message');
+						response.listMessagesReturn.messages.message = [response.listMessagesReturn.messages.message];
+					} else {
+						// messages: {message: []},
+						grunt.log.writeln('There were more than one message');
+					}
+					response.listMessagesReturn.messages.message.forEach(function (message) {
+						grunt.log.writeln('From: ' + message.from);
+						grunt.log.writeln('To: ' + message.to);
+						grunt.log.writeln('Subject: ' + message.subject);
+						grunt.log.writeln('Date: ' + message.date);						
+						grunt.log.writeln('Body: ' + message.body);
+					});
+				}
 			} else {
-				grunt.log.writeln(response.listMessagesReturn.message);
+				grunt.log.writeln('Failed to return messages: ' + response.listMessagesReturn.message);
 			}
 		}
 	});
@@ -93,7 +107,7 @@ function createClient() {
 			next(done);
 		} else {
 			grunt.log.writeln('Client created');
-			client = clientObj; // here we save the client out as a global object that survives between callbacks
+			client = clientObj;
 			next();
 		}
 	});
@@ -112,11 +126,11 @@ module.exports = function (gruntObj) {
 		grunt = gruntObj;
 		done = this.async();
 		next([
-			[bugUser], // these need to modify global variables
+			[bugUser],
 			[createClient],
-			[listMessages], // we will call readDefaultContainer when we pick a site
+			[listMessages],
 			[grunt.log.writeln, 'all our tasks are done'],
-			[done] // when we get finished doing our thing we let grunt know we are done
+			[done]
 		]);
 	});
 };

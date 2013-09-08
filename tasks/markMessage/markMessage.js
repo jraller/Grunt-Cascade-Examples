@@ -41,17 +41,6 @@ var grunt = {},
 			type: 'password',
 			name: 'password',
 			message: 'Password: '
-		},
-		{
-			type: 'input',
-			name: 'siteName',
-			message: 'Sitename: '
-		},
-		{
-			type: 'input',
-			name: 'connectorContainerName',
-			message: 'connector folder name: ',
-			'default': '/'
 		}
 	];
 

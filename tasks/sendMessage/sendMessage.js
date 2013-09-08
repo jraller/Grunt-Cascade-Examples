@@ -1,15 +1,6 @@
+/*jslint node:true */
+
 'use strict';
-
-
-
-
-/*
-
-REWRITE
-
-*/
-
-
 
 var grunt = {},
 	done,
@@ -22,13 +13,11 @@ var grunt = {},
 			password: '',
 			username: ''
 		},
-		identifier: {
-			path: {
-				path: '',
-				siteName: ''
-			},
-			type: 'connectorcontainer',
-			recycled: 'false'
+		message: {
+			to: '',
+			from: '',
+			subject: '',
+			body: ''
 		}
 	},
 	questions = [
@@ -45,14 +34,13 @@ var grunt = {},
 		},
 		{
 			type: 'input',
-			name: 'siteName',
-			message: 'Sitename: '
+			name: 'subject',
+			message: 'Subject: '
 		},
 		{
 			type: 'input',
-			name: 'connectorContainerName',
-			message: 'connector folder name: ',
-			'default': '/'
+			name: 'body',
+			message: 'Body: '
 		}
 	];
 
@@ -84,28 +72,17 @@ function die() {
 	nextList = [];
 }
 
-function readConnectorContainer() {
-	client.read(soapArgs, function (err, response) {
+function spam() {
+	client.sendMessage(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
+			grunt.log.writeln('Error sending message: ' + err.message);
 			die();
 			next(done);
 		} else {
-			grunt.log.writeln('connector containers returned:');
-			if (response.readReturn.success.toString() === 'true') {
-				grunt.log.writeln('connector containers named ' + response.readReturn.asset.connectorContainer.name);
-				if (response.readReturn.asset.connectorContainer.children && response.readReturn.asset.connectorContainer.children.child) {
-					if (!Array.isArray(response.readReturn.asset.connectorContainer.children.child)) {
-						response.readReturn.asset.connectorContainer.children.child = [response.readReturn.asset.connectorContainer.children.child];
-					}
-					response.readReturn.asset.connectorContainer.children.child.forEach(function (child) {
-						grunt.log.writeln('connector named ' + child.path.path + ' of type ' + child.type);
-					});
-				} else {
-					grunt.log.writeln('it was empty of connectors');
-				}
+			if (response.sendMessageReturn.success.toString() === 'true') {
+				grunt.log.writeln('Message sent');
 			} else {
-				grunt.log.writeln(response.readReturn.message);
+				grunt.log.writeln('Failed to send message:' + response.sendMessageReturn.message);
 			}
 		}
 	});
@@ -121,7 +98,7 @@ function createClient() {
 			next(done);
 		} else {
 			grunt.log.writeln('Client created');
-			client = clientObj; // here we save the client out as a global object that survives between callbacks
+			client = clientObj;
 			next();
 		}
 	});
@@ -131,22 +108,24 @@ function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
-		soapArgs.identifier.path.siteName = answers.siteName;
-		soapArgs.identifier.path.path = answers.connectorContainerName;
+		soapArgs.message.to = answers.username;
+		soapArgs.message.from = answers.username;
+		soapArgs.message.subject = answers.subject;
+		soapArgs.message.body = answers.body; // you can send html if you encode it correctly turn < into &lt;
 		next();
 	});
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('sendmessage', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('sendmessage', 'spam ourself', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([
-			[bugUser], // these need to modify global variables
+			[bugUser],
 			[createClient],
-			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
+			[spam],
 			[grunt.log.writeln, 'all our tasks are done'],
-			[done] // when we get finished doing our thing we let grunt know we are done
+			[done]
 		]);
 	});
 };
