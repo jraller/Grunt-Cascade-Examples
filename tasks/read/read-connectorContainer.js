@@ -75,12 +75,27 @@ function die() {
 	nextList = [];
 }
 
+function report(message) {
+	if (typeof message === 'string') {
+		grunt.log.writeln(message);
+	} else {
+		console.dir(message);
+	}
+	next();
+}
+
+function handleError(err) {
+	die(); // this error handler is not designed for recovery, but graceful exiting, so we die and then display the error message and let Grunt exit
+	next([
+		[report, handleError.caller.name + ' responded with: ' + err.message],
+		[done]
+	]);
+}
+
 function readConnectorContainer() {
 	client.read(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
-			die();
-			next(done);
+			handleError(err);
 		} else {
 			grunt.log.writeln('connector containers returned:');
 			if (response.readReturn.success.toString() === 'true') {
@@ -108,9 +123,7 @@ function createClient() {
 		ws = grunt.config('cascade.ws');
 	soap.createClient(url + ws, function (err, clientObj) {
 		if (err) {
-			grunt.log.writeln('Error creating client: ' + err.message);
-			die();
-			next(done);
+			handleError(err);
 		} else {
 			grunt.log.writeln('Client created');
 			client = clientObj; // here we save the client out as a global object that survives between callbacks
@@ -137,7 +150,7 @@ module.exports = function (gruntObj) {
 			[bugUser], // these need to modify global variables
 			[createClient],
 			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
-			[grunt.log.writeln, 'all our tasks are done'],
+			[report, 'all our tasks are done'],
 			[done] // when we get finished doing our thing we let grunt know we are done
 		]);
 	});

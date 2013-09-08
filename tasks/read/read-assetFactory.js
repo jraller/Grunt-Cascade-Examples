@@ -66,6 +66,16 @@ function die() {
 	nextList = []; //clear out any other tasks we have planned as we have hit an error
 }
 
+
+function report(message) {
+	if (typeof message === 'string') {
+		grunt.log.writeln(message);
+	} else {
+		console.dir(message);
+	}
+	next();
+}
+
 // #11
 function readAssetFactory(path) {
 	soapArgs.identifier.path.path = path;
@@ -164,7 +174,7 @@ module.exports = function (gruntObj) {
 			[bugUser], // these need to modify global variables
 			[createClient],
 			[listSites], // we will call readDefaultContainer when we pick a site
-			[grunt.log.writeln, 'all our tasks are done'],
+			[report, 'all our tasks are done'], // because if we use grunt.log.writeln as the function call it won't continue the chain by calling next();
 			[done] // when we get finished doing our thing we let grunt know we are done. #13 is the last call made in our code as it tells Grunt we are done.
 		]);
 	});

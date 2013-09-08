@@ -72,6 +72,23 @@ function die() {
 	nextList = [];
 }
 
+function report(message) {
+	if (typeof message === 'string') {
+		grunt.log.writeln(message);
+	} else {
+		console.dir(message);
+	}
+	next();
+}
+
+function handleError(err) {
+	die(); // this error handler is not designed for recovery, but graceful exiting, so we die and then display the error message and let Grunt exit
+	next([
+		[report, handleError.caller.name + ' responded with: ' + err.message],
+		[done]
+	]);
+}
+
 function spam() {
 	client.sendMessage(soapArgs, function (err, response) {
 		if (err) {
@@ -124,7 +141,7 @@ module.exports = function (gruntObj) {
 			[bugUser],
 			[createClient],
 			[spam],
-			[grunt.log.writeln, 'all our tasks are done'],
+			[report, 'all our tasks are done'],
 			[done]
 		]);
 	});

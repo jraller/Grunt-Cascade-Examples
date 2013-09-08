@@ -1,3 +1,5 @@
+/*jslint node:true */
+
 'use strict';
 
 // generalized delete
@@ -89,6 +91,23 @@ function die() {
 	nextList = [];
 }
 
+function report(message) {
+	if (typeof message === 'string') {
+		grunt.log.writeln(message);
+	} else {
+		console.dir(message);
+	}
+	next();
+}
+
+function handleError(err) {
+	die(); // this error handler is not designed for recovery, but graceful exiting, so we die and then display the error message and let Grunt exit
+	next([
+		[report, handleError.caller.name + ' responded with: ' + err.message],
+		[done]
+	]);
+}
+
 function readConnectorContainer() {
 	client.read(soapArgs, function (err, response) {
 		if (err) {
@@ -150,7 +169,7 @@ module.exports = function (gruntObj) {
 			[bugUser], // these need to modify global variables
 			[createClient],
 			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
-			[grunt.log.writeln, 'all our tasks are done'],
+			[report, 'all our tasks are done'],
 			[done] // when we get finished doing our thing we let grunt know we are done
 		]);
 	});

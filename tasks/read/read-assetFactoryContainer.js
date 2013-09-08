@@ -49,7 +49,7 @@ module.exports = function (grunt) {
 					done();
 				} else {
 					grunt.log.writeln('Client created');
-					client.listSites({authentication: soapArgs.authentication}, function(err, response) {
+					client.listSites({authentication: soapArgs.authentication}, function (err, response) {
 						if (err) {
 							grunt.log.writeln('Error finding first site: ' + err.message);
 							grunt.log.writeflags(err);

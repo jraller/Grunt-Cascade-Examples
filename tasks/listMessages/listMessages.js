@@ -59,6 +59,23 @@ function die() {
 	nextList = [];
 }
 
+function report(message) {
+	if (typeof message === 'string') {
+		grunt.log.writeln(message);
+	} else {
+		console.dir(message);
+	}
+	next();
+}
+
+function handleError(err) {
+	die(); // this error handler is not designed for recovery, but graceful exiting, so we die and then display the error message and let Grunt exit
+	next([
+		[report, handleError.caller.name + ' responded with: ' + err.message],
+		[done]
+	]);
+}
+
 function listMessages() {
 	client.listMessages(soapArgs, function (err, response) {
 		if (err) {
@@ -86,7 +103,7 @@ function listMessages() {
 						grunt.log.writeln('From: ' + message.from);
 						grunt.log.writeln('To: ' + message.to);
 						grunt.log.writeln('Subject: ' + message.subject);
-						grunt.log.writeln('Date: ' + message.date);						
+						grunt.log.writeln('Date: ' + message.date);
 						grunt.log.writeln('Body: ' + message.body);
 					});
 				}
@@ -130,7 +147,7 @@ module.exports = function (gruntObj) {
 			[bugUser],
 			[createClient],
 			[listMessages],
-//			[grunt.log.writeln, 'all our tasks are done'], // commented out because I need to turn all of these into report() calls so that they call next() after the grunt.log.writeln so we exit well
+			[report, 'all our tasks are done'],
 			[done]
 		]);
 	});
