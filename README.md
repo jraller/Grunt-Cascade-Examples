@@ -18,6 +18,8 @@ Run the tests. To run the first test for instance: `grunt client`.
 Play with the tests. Intentionally get them to fail by trying to call them against non-existent assets or by supplying unprivileged credentials.
 Knowing how the calls handle failures and unexpected responses will help you write better code.
 
+`grunt --help` will list all of the known tasks that are available in the Gruntfile.
+
 # Lessons and Commentary
 
 ## createClient
