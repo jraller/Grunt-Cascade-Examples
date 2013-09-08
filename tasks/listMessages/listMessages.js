@@ -108,7 +108,7 @@ function bugUser() {
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('listmessage', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('listmessages', 'call the read action for the default connector container', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([
