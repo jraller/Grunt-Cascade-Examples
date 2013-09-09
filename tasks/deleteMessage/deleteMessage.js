@@ -95,8 +95,7 @@ function deleteMessage(messageId) {
 
 function listMessages() {
 	client.listMessages(soapArgs, function (err, response) {
-		var calls = [],
-			i = 0;
+		var calls = [];
 		if (err) {
 			grunt.log.writeln('Error listing Messages: ' + err.message);
 			die();
@@ -119,7 +118,7 @@ function listMessages() {
 						grunt.log.writeln('There were more than one message');
 					}
 					response.listMessagesReturn.messages.message.forEach(function (message) {
-						calls[i++] = [deleteMessage, message.id];
+						calls.push([deleteMessage, message.id]);
 					});
 					next(calls);
 				}

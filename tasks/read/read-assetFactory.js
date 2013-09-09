@@ -98,8 +98,7 @@ function readAssetFactory(path) {
 function readDefaultContainer(siteNamePassed) {
 	soapArgs.identifier.path.siteName = siteNamePassed; // we catch the passed variable
 	client.read(soapArgs, function (err, response) {
-		var calls = [],
-			i = 0;
+		var calls = [];
 		if (err) {
 			grunt.log.writeln('Error reading asset factory container: ' +  err.message);
 			die();
@@ -109,7 +108,7 @@ function readDefaultContainer(siteNamePassed) {
 				grunt.log.writeln('AssetFactoryContainer: ');
 				response.readReturn.asset.assetFactoryContainer.children.child.forEach(function (child) {
 //					grunt.log.writeln(child.path.path + ' - ' + child.type);
-					calls[i++] = [readAssetFactory, child.path.path]; // here we are adding calls to be made in a single exit call to next.
+					calls.push([readAssetFactory, child.path.path]); // here we are adding calls to be made in a single exit call to next.
 				});
 				next(calls); // #10 when we call next this time the number of items to be added to the stack depends on how many items are in the default container.
 			} else {

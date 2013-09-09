@@ -108,8 +108,7 @@ function makeSite() {
 			'readResult',
 			'readWorkflowInformationResult',
 			'searchResult'
-		],
-		batchCount = 0;
+		];
 	soapArgs.operation = [];
 	action.create = {};
 	action.create.asset = {};
