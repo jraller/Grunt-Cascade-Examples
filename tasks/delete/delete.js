@@ -6,14 +6,21 @@
 
 // handle read parent folder if type not supplied?
 
-
-
-
-
 /*
-
-REWRITE
-
+<as:authentication>
+	<as:password>STRING</as:password>
+	<as:username>STRING</as:username>
+</as:authentication>
+<as:identifier>
+	<as:id>STRING</as:id>
+	<as:path>
+		<as:path>STRING</as:path>
+		<as:siteId/>
+		<as:siteName/>
+	</as:path>
+	<as:type>ENTITYTYPESTRING</as:type>
+	<as:recycled>BOOLEAN</as:recycled>
+</as:identifier>
 */
 
 

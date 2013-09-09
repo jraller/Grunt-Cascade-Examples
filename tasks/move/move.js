@@ -2,15 +2,51 @@
 
 'use strict';
 
-
-
 /*
-
-REWRITE
-
+<as:move>
+	<as:authentication>
+		<as:password>STRING</as:password>
+		<as:username>STRING</as:username>
+	</as:authentication>
+	<as:identifier>
+		<as:id>STRING</as:id>
+		<as:path>
+			<as:path>STRING</as:path>
+			<as:siteId/>
+			<as:siteName/>
+		</as:path>
+		<as:type>ENTITYTYPESTRING</as:type>
+		<as:recycled>BOOLEAN</as:recycled>
+	</as:identifier>
+	<as:moveParameters>
+		<as:destinationContainerIdentifier>
+			<as:id>STRING</as:id>
+			<as:path>
+				<as:path>STRING</as:path>
+				<as:siteId/>
+				<as:siteName/>
+			</as:path>
+			<as:type>ENTITYTYPESTRING</as:type>
+			<as:recycled>BOOLEAN</as:recycled>
+		</as:destinationContainerIdentifier>
+		<as:doWorkflow>BOOLEAN</as:doWorkflow>
+		<as:newName>STRING</as:newName>
+	</as:moveParameters>
+	<as:workflowConfiguration>
+		<as:workflowName>STRING</as:workflowName>
+		<as:workflowDefinitionId>STRING</as:workflowDefinitionId>
+		<as:workflowDefinitionPath>STRING</as:workflowDefinitionPath>
+		<as:workflowComments>STRING</as:workflowComments>
+		<as:workflowStepConfigurations>
+			<as:workflowStepConfiguration>
+				<as:stepIdentifier>STRING</as:stepIdentifier>
+				<as:stepAssignment>STRING</as:stepAssignment>
+			</as:workflowStepConfiguration>
+		</as:workflowStepConfigurations>
+		<as:endDate>DATETIME</as:endDate>
+	</as:workflowConfiguration>
+</as:move>
 */
-
-
 
 var grunt = {},
 	done,

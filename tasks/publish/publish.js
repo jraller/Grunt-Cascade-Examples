@@ -6,9 +6,35 @@
 
 
 /*
-
-REWRITE
-
+<as:authentication>
+	<as:password>STRING</as:password>
+	<as:username>STRING</as:username>
+</as:authentication>
+<as:publishInformation>
+	<as:identifier>
+		<as:id>STRING</as:id>
+		<as:path>
+			<as:path>STRING</as:path>
+			<as:siteId/>
+			<as:siteName/>
+		</as:path>
+		<as:type>ENTITYTYPESTRING</as:type>
+		<as:recycled>BOOLEAN</as:recycled>
+	</as:identifier>
+	<as:destinations>
+		<as:assetIdentifier>
+			<as:id>STRING</as:id>
+			<as:path>
+				<as:path>STRING</as:path>
+				<as:siteId/>
+				<as:siteName/>
+			</as:path>
+			<as:type>ENTITYTYPESTRING</as:type>
+			<as:recycled>BOOLEAN</as:recycled>
+		</as:assetIdentifier>
+	</as:destinations>
+	<as:unpublish/>
+</as:publishInformation>
 */
 
 

@@ -2,16 +2,11 @@
 
 'use strict';
 
-
-
-
 /*
 
 REWRITE
 
 */
-
-
 
 var grunt = {},
 	done,

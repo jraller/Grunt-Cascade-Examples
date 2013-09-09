@@ -2,15 +2,17 @@
 
 'use strict';
 
-
-
 /*
-
-REWRITE
-
+<as:siteCopy>
+	<as:authentication>
+		<as:password>STRING</as:password>
+		<as:username>STRING</as:username>
+	</as:authentication>
+	<as:originalSiteId>STRING</as:originalSiteId>
+	<as:originalSiteName>STRING</as:originalSiteName>
+	<as:newSiteName>STRING</as:newSiteName>
+</as:siteCopy>
 */
-
-
 
 var grunt = {},
 	done,
