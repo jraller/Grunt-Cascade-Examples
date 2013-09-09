@@ -2,17 +2,6 @@
 
 'use strict';
 
-
-
-
-/*
-
-REWRITE
-
-*/
-
-
-
 var grunt = {},
 	done,
 	nextList = [],
@@ -23,14 +12,6 @@ var grunt = {},
 		authentication: {
 			password: '',
 			username: ''
-		},
-		identifier: {
-			path: {
-				path: '',
-				siteName: ''
-			},
-			type: 'connectorcontainer',
-			recycled: 'false'
 		}
 	},
 	questions = [
@@ -44,17 +25,6 @@ var grunt = {},
 			type: 'password',
 			name: 'password',
 			message: 'Password: '
-		},
-		{
-			type: 'input',
-			name: 'siteName',
-			message: 'Sitename: '
-		},
-		{
-			type: 'input',
-			name: 'connectorContainerName',
-			message: 'connector folder name: ',
-			'default': '/'
 		}
 	];
 
@@ -106,28 +76,55 @@ function handleError(err, caller) {
 	]);
 }
 
-function readConnectorContainer() {
-	client.read(soapArgs, function (err, response) {
+function deleteMessage(messageId) {
+	soapArgs.identifier = {};
+	soapArgs.identifier.id = messageId;
+	soapArgs.identifier.type = 'message';
+	client.deleteMessage(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
+			handleError(err, 'deleteMessage');
+		} else {
+			if (response.deleteMessageReturn.success.toString() === 'true') {
+				report('message ' + messageId + ' was deleted');
+			} else {
+				report('there was a problem with the message ' + messageId + ' which responded with: ' + response.deleteMessageReturn.message);
+			}
+		}
+	});
+}
+
+function listMessages() {
+	client.listMessages(soapArgs, function (err, response) {
+		var calls = [],
+			i = 0;
+		if (err) {
+			grunt.log.writeln('Error listing Messages: ' + err.message);
 			die();
 			next(done);
 		} else {
-			grunt.log.writeln('connector containers returned:');
-			if (response.readReturn.success.toString() === 'true') {
-				grunt.log.writeln('connector containers named ' + response.readReturn.asset.connectorContainer.name);
-				if (response.readReturn.asset.connectorContainer.children && response.readReturn.asset.connectorContainer.children.child) {
-					if (!Array.isArray(response.readReturn.asset.connectorContainer.children.child)) {
-						response.readReturn.asset.connectorContainer.children.child = [response.readReturn.asset.connectorContainer.children.child];
-					}
-					response.readReturn.asset.connectorContainer.children.child.forEach(function (child) {
-						grunt.log.writeln('connector named ' + child.path.path + ' of type ' + child.type);
-					});
+			grunt.log.writeln('Messages returned:');
+			if (response.listMessagesReturn.success.toString() === 'true') {
+				grunt.log.writeflags(response.listMessagesReturn);
+				if (!response.listMessagesReturn.messages.message) {
+					// messages: {}, - no messages
+					grunt.log.writeln('There were no messages');
 				} else {
-					grunt.log.writeln('it was empty of connectors');
+					grunt.log.writeln('There was at least one message');
+					if (!Array.isArray(response.listMessagesReturn.messages.message)) {
+						// messages: {message: {}},
+						grunt.log.writeln('There was exactly one message');
+						response.listMessagesReturn.messages.message = [response.listMessagesReturn.messages.message];
+					} else {
+						// messages: {message: []},
+						grunt.log.writeln('There were more than one message');
+					}
+					response.listMessagesReturn.messages.message.forEach(function (message) {
+						calls[i++] = [deleteMessage, message.id];
+					});
+					next(calls);
 				}
 			} else {
-				grunt.log.writeln(response.readReturn.message);
+				grunt.log.writeln('Failed to return messages: ' + response.listMessagesReturn.message);
 			}
 		}
 	});
@@ -153,20 +150,19 @@ function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
-		soapArgs.identifier.path.siteName = answers.siteName;
-		soapArgs.identifier.path.path = answers.connectorContainerName;
 		next();
 	});
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('deletemessage', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('deletemessage', 'deletes all messages', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([
+			[report, 'THIS WILL DELETE ALL THE MESSAGES for the credentials you supply'],
 			[bugUser], // these need to modify global variables
 			[createClient],
-			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
+			[listMessages], // we will call readDefaultContainer when we pick a site
 			[report, 'all our tasks are done'],
 			[done] // when we get finished doing our thing we let grunt know we are done
 		]);

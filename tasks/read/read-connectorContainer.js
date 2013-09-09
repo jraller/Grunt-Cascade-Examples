@@ -95,7 +95,7 @@ function handleError(err) {
 function readConnectorContainer() {
 	client.read(soapArgs, function (err, response) {
 		if (err) {
-			handleError(err);
+			handleError(err, 'readConnectorContainer');
 		} else {
 			grunt.log.writeln('connector containers returned:');
 			if (response.readReturn.success.toString() === 'true') {
@@ -123,7 +123,7 @@ function createClient() {
 		ws = grunt.config('cascade.ws');
 	soap.createClient(url + ws, function (err, clientObj) {
 		if (err) {
-			handleError(err);
+			handleError(err, 'createClient');
 		} else {
 			grunt.log.writeln('Client created');
 			client = clientObj; // here we save the client out as a global object that survives between callbacks
