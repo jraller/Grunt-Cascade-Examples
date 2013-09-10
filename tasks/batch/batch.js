@@ -159,9 +159,7 @@ function createClient() {
 		ws = grunt.config('cascade.ws');
 	soap.createClient(url + ws, function (err, clientObj) {
 		if (err) {
-			grunt.log.writeln('Error creating client: ' + err.message);
-			die();
-			next(done);
+			handleError(err, 'createClient');
 		} else {
 			grunt.log.writeln('Client created');
 			client = clientObj;

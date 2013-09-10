@@ -95,9 +95,7 @@ function handleError(err, caller) {
 function spam() {
 	client.sendMessage(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error sending message: ' + err.message);
-			die();
-			next(done);
+			handleError(err, 'spam');
 		} else {
 			if (response.sendMessageReturn.success.toString() === 'true') {
 				grunt.log.writeln('Message sent');
@@ -114,9 +112,7 @@ function createClient() {
 		ws = grunt.config('cascade.ws');
 	soap.createClient(url + ws, function (err, clientObj) {
 		if (err) {
-			grunt.log.writeln('Error creating client: ' + err.message);
-			die();
-			next(done);
+			handleError(err, 'createClient');
 		} else {
 			grunt.log.writeln('Client created');
 			client = clientObj;

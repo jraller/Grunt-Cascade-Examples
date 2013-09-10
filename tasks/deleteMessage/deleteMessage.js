@@ -97,9 +97,7 @@ function listMessages() {
 	client.listMessages(soapArgs, function (err, response) {
 		var calls = [];
 		if (err) {
-			grunt.log.writeln('Error listing Messages: ' + err.message);
-			die();
-			next(done);
+			handleError(err, 'listMessages');
 		} else {
 			grunt.log.writeln('Messages returned:');
 			if (response.listMessagesReturn.success.toString() === 'true') {
@@ -134,9 +132,7 @@ function createClient() {
 		ws = grunt.config('cascade.ws');
 	soap.createClient(url + ws, function (err, clientObj) {
 		if (err) {
-			grunt.log.writeln('Error creating client: ' + err.message);
-			die();
-			next(done);
+			handleError(err, 'createClient');
 		} else {
 			grunt.log.writeln('Client created');
 			client = clientObj; // here we save the client out as a global object that survives between callbacks
