@@ -22,6 +22,8 @@ Knowing how the calls handle failures and unexpected responses will help you wri
 
 # Lessons and Commentary
 
+see also: [Cascade Server Web Services Wiki](https://github.com/jraller/Grunt-Cascade-Examples/wiki)
+
 ## createClient
 
 Creating a client connection to the server is the first step. This is a call against the `soap-cascade` library.
