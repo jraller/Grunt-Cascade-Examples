@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // Task configuration.
 		cascade: {
-			server: 'http://conference.cascadeserver.com', // within the quotes put the full url of your cascade server
+			server: 'http://csuc13.cascadeserver.com', // within the quotes put the full url of your cascade server
 			ws: '/ws/services/AssetOperationService?wsdl', // this is the extension that gets added to your cascade server url
 			site: 'GruntExample' // change this if for some reason you have or want a site by this name
 		},

@@ -7,8 +7,8 @@ module.exports = function (grunt) {
 
 		var done = this.async(),
 			soap = require('soap-cascade'),
-			url = 'http://conference.cascadeserver.com',
-			ws = '/ws/services/AssetOperationService?wsdl',
+			url = grunt.config('cascade.server'),
+			ws = grunt.config('cascade.ws'),
 			soapArgs = { // we need to send authentication to the server, so we start building an object to hold username and password, later more things will go in here
 				authentication: { // note that the password entry comes before the username entry. Cascade can be picky about the order it sees things in. I suspect that in this case it was alphabetical.
 					password: 'password', // but who wants to put a password into a file like this? see listSites2.js for the solution

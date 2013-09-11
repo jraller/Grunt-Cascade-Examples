@@ -8,8 +8,8 @@ module.exports = function (grunt) {
 		var done = this.async(),
 			soap = require('soap-cascade'),
 			inquirer = require('inquirer'),
-			url = 'http://conference.cascadeserver.com',
-			ws = '/ws/services/AssetOperationService?wsdl',
+			url = grunt.config('cascade.server'),
+			ws = grunt.config('cascade.ws'),
 			soapArgs = {
 				authentication: {
 					password: '',
