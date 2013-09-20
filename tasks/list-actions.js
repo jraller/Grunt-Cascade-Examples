@@ -1,5 +1,9 @@
 /*jslint node:true */
 
+/*
+ * This example builds on client.js and performs an action against the returned client object
+ */
+
 'use strict';
 
 module.exports = function (grunt) {
@@ -23,6 +27,8 @@ module.exports = function (grunt) {
 		});
 	});
 };
+
+/* the expected output from version 7.6 */
 
 /*
 Client created:

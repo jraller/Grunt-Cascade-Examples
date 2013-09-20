@@ -1,13 +1,13 @@
 /*jslint node:true */ // tell jslint that this code is for NodeJS
 
-'use strict'; // putting JavaScript into strict mode will force us to write better code
-
 /*
  * This example demonstrates creating a client
  * 
  * If the call is successful it will return the client object,
  * if not it will return an err object.
  */
+
+'use strict'; // putting JavaScript into strict mode will force us to write better code
 
 module.exports = function (grunt) { // a wrapper to put this in. This line and the next line are standard grunt wrappers
 	grunt.registerTask('client', 'demonstrate calling the client', function () { // the code inside this function is what is run when you type `grunt client`

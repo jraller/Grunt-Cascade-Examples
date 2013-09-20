@@ -1,5 +1,9 @@
 /*jslint node:true */
 
+/*
+ * This is the first example call. listSites is a good place to start because it only requires authorization to be sent.
+ */
+
 'use strict';
 
 module.exports = function (grunt) {
@@ -29,12 +33,12 @@ module.exports = function (grunt) {
 						grunt.log.writeln('Error listing sites: ');
 						grunt.log.writeflags(err);
 					} else {
-						if (response.listSitesReturn.success.toString() === 'true') {
+						if (response.listSitesReturn.success.toString() === 'true') { // response calls from Cascade will have a success and a message value
 							grunt.log.writeln('Sites: ');
-							grunt.log.writeflags(response.listSitesReturn);
+							grunt.log.writeflags(response.listSitesReturn); // in this case we are dumping the entire object rather than processing it
 						} else {
 							grunt.log.writeln('Cascade responded with: ');
-							grunt.log.writeln(response.listSitesReturn.message);
+							grunt.log.writeln(response.listSitesReturn.message); // if success is not 'true' then usually there will be an explanation in the message
 						}
 					}
 					done();
