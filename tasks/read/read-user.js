@@ -1,5 +1,9 @@
 /*jslint node:true */
 
+/*
+ * A little self introspection, we will get the user object for the current username and password
+ */
+
 'use strict';
 
 module.exports = function (grunt) {
@@ -15,8 +19,8 @@ module.exports = function (grunt) {
 					password: '',
 					username: ''
 				},
-				identifier: {
-					id: '',
+				identifier: { // we supply the framework of the second part of the soapArgs here
+					id: '', // specifying it this way allows us to control the order of the parts of the object. A future refinement to soap-cascade will hopefully make this unneeded.
 					type: 'user',
 					recycled: 'false'
 				}
@@ -47,15 +51,14 @@ module.exports = function (grunt) {
 					done();
 				} else {
 					grunt.log.writeln('Client created');
-					// note that client a local variable to this anonymous function, later we will assign it to a global variable
-					client.read(soapArgs, function (err, response) { // the client object knows which server to go to
+					client.read(soapArgs, function (err, response) {
 						if (err) {
 							grunt.log.writeln('Error reading user: ');
 							grunt.log.writeflags(err);
 						} else {
 							if (response.readReturn.success.toString() === 'true') {
 								grunt.log.writeln('User: ');
-								grunt.log.writeflags(response.readReturn.asset.user);
+								grunt.log.writeflags(response.readReturn.asset.user); // a raw dump of the data that makes up the user portion of the response.
 							} else {
 								grunt.log.writeln('Cascade responded with: ');
 								grunt.log.writeln(response.readReturn.message);
