@@ -2,7 +2,9 @@ Grunt-Cascade-Examples
 ======================
 
 This collection is a set of examples and test code for accessing [Cascade Server](http://www.hannonhill.com/) 
-[Web Services](http://www.hannonhill.com/kb/Web-Services/) in [NodeJS](http://nodejs.org/).
+[Web Services](http://www.hannonhill.com/kb/Web-Services/) in [NodeJS](http://nodejs.org/). For additional
+information see both the [knowledge base](http://www.hannonhill.com/kb/) and 
+[the Hannon Hill GitHub](https://github.com/hannonhill).
 
 Right now these calls are being written to target version 7.6. 
 See the [web services changelog](http://www.hannonhill.com/kb/Web-Services/Web%20Services%20Changelog/index.html) 

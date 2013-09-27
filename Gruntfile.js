@@ -55,6 +55,17 @@ module.exports = function (grunt) {
 	grunt.loadTasks('tasks/move');
 	grunt.loadTasks('tasks/search');
 	grunt.loadTasks('tasks/siteCopy');
+	grunt.loadTasks('tasks/checkIn');
+	grunt.loadTasks('tasks/checkOut');
+	grunt.loadTasks('tasks/create');
+	grunt.loadTasks('tasks/readAccessRights');
+	grunt.loadTasks('tasks/editAccessRights');
+	grunt.loadTasks('tasks/editWorkflowSettings');
+	grunt.loadTasks('tasks/listSubscribers');
+	grunt.loadTasks('tasks/performWorkflowTransition');
+	grunt.loadTasks('tasks/readAudits');
+	grunt.loadTasks('tasks/readWorkflowInformation');
+	grunt.loadTasks('tasks/readWorkflowSettings');
 
     // Default task.
     grunt.registerTask('default', ['jshint:all']); //, 'nodeunit'

@@ -1,6 +1,11 @@
 /*jslint node:true */
 
-'use strict';
+/*
+ * Here we start asking the user to specify which group to get information about.
+ * This is a good way to let is play with the error object as it is now easy to supply input that will result in a "group not found" error message.
+ */
+
+ 'use strict';
 
 module.exports = function (grunt) {
 	grunt.registerTask('readgroup', 'call the read action to read the current user', function () {
@@ -52,8 +57,7 @@ module.exports = function (grunt) {
 					done();
 				} else {
 					grunt.log.writeln('Client created');
-					// note that client a local variable to this anonymous function, later we will assign it to a global variable
-					client.read(soapArgs, function (err, response) { // the client object knows which server to go to
+					client.read(soapArgs, function (err, response) {
 						if (err) {
 							grunt.log.writeln('Error reading group: ');
 							grunt.log.writeflags(err);
@@ -63,7 +67,7 @@ module.exports = function (grunt) {
 								grunt.log.writeflags(response.readReturn.asset.group);
 							} else {
 								grunt.log.writeln('Cascade responded with: ');
-								grunt.log.writeln(response.readReturn.message);
+								grunt.log.writeln(response.readReturn.message); // if you specify a group that does not exist you'll see this output
 							}
 						}
 						done();

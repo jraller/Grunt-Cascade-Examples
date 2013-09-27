@@ -1,6 +1,12 @@
 /*jslint node:true */
 
-// to follow execution path jump to #01
+/*
+ * Here we work with next() which is one way to implement continuation passing style coding
+ * http://matt.might.net/articles/by-example-continuation-passing-style/
+ * http://marijnhaverbeke.nl/cps/
+ *
+ * to follow execution path jump to #01
+ */
 
 'use strict';
 
