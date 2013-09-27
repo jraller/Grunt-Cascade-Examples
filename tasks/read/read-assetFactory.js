@@ -35,6 +35,17 @@ var grunt = {},
 			type: 'password',
 			name: 'password',
 			message: 'Password: '
+		},
+//		{
+//			type: 'input',
+//			name: 'siteName',
+//			message: 'Site: '
+//		},
+		{
+			type: 'input',
+			name: 'path',
+			message: 'Container: ',
+			'default': 'Default'
 		}
 	];
 
@@ -159,6 +170,8 @@ function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
+//		soapArgs.identifier.path.siteName = answers.siteName;
+		soapArgs.identifier.path.path = answers.path;
 		next(); // #04 leaving inquirer callback to go to next which should call createClient
 	});
 }
@@ -169,6 +182,7 @@ module.exports = function (gruntObj) {
 	gruntObj.registerTask('readassetfactory', 'call the read action and get several asset factories', function () {
 		grunt = gruntObj;
 		done = this.async(); // save this as the last call we will make. It tells Grunt that we are finished with our async calls.
+		grunt.log.writeln('Read all asset factories in the Default container of the first site');
 		next([ // #02 next gets called the first time
 			[bugUser], // these need to modify global variables
 			[createClient],
