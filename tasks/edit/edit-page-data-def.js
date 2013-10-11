@@ -20,7 +20,7 @@ var grunt = {},
 				path: '',
 				siteName: ''
 			},
-			type: 'connectorcontainer',
+			type: 'page',
 			recycled: 'false'
 		}
 	},
@@ -29,7 +29,7 @@ var grunt = {},
 			type: 'input',
 			name: 'username',
 			message: 'Username: ',
-			'default': 'yourUsernameHereIfYouWant'
+			'default': 'jraller'
 		},
 		{
 			type: 'password',
@@ -39,13 +39,14 @@ var grunt = {},
 		{
 			type: 'input',
 			name: 'siteName',
-			message: 'Sitename: '
+			message: 'Sitename: ',
+			'default': 'Jason'
 		},
 		{
 			type: 'input',
-			name: 'connectorContainerName',
-			message: 'connector folder name: ',
-			'default': '/'
+			name: 'pagePath',
+			message: 'page path: ',
+			'default': 'to-edit'
 		}
 	];
 
@@ -97,31 +98,51 @@ function handleError(err, caller) {
 	]);
 }
 
-function readConnectorContainer() {
+function readPage() {
 	client.read(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
+			grunt.log.writeln('Error reading page: ' + err.message);
 			die();
 			next(done);
 		} else {
-			grunt.log.writeln('connector containers returned:');
+			grunt.log.writeln('page returned:');
 			if (response.readReturn.success.toString() === 'true') {
-				grunt.log.writeln('connector containers named ' + response.readReturn.asset.connectorContainer.name);
-				if (response.readReturn.asset.connectorContainer.children && response.readReturn.asset.connectorContainer.children.child) {
-					if (!Array.isArray(response.readReturn.asset.connectorContainer.children.child)) {
-						response.readReturn.asset.connectorContainer.children.child = [response.readReturn.asset.connectorContainer.children.child];
+//				grunt.log.writeflags(response.readReturn.asset.page);
+//				console.log(response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text);
+				response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text += '0';
+				delete soapArgs.identifier;
+				soapArgs.asset = {}
+				soapArgs.asset.page = response.readReturn.asset.page;
+/*
+				delete soapArgs.asset.page.metadata.endDate;
+				delete soapArgs.asset.page.metadata.reviewDate;
+				delete soapArgs.asset.page.metadata.startDate;
+				delete soapArgs.asset.page.lastPublishedDate;
+*/		
+//				grunt.log.writeflags(soapArgs);
+
+				grunt.log.writeln('pre-edit');
+				client.edit(soapArgs, function (err, response) {
+					if (err) {
+						grunt.log.writeln('Error editing page: ' + err.message);
+
+//						grunt.log.writeln(client.lastRequest); //.replace(/>/g, '>\n')
+
+						die();
+						next(done);						
+					} else {
+						grunt.log.writeln('post-edit');
+						
+						grunt.log.writeln('response:');
+						grunt.log.writeflags(response);
 					}
-					response.readReturn.asset.connectorContainer.children.child.forEach(function (child) {
-						grunt.log.writeln('connector named ' + child.path.path + ' of type ' + child.type);
-					});
-				} else {
-					grunt.log.writeln('it was empty of connectors');
-				}
+				});
 			} else {
 				grunt.log.writeln(response.readReturn.message);
 			}
 		}
 	});
+
 }
 
 function createClient() {
@@ -143,19 +164,20 @@ function bugUser() {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
 		soapArgs.identifier.path.siteName = answers.siteName;
-		soapArgs.identifier.path.path = answers.connectorContainerName;
+		soapArgs.identifier.path.path = answers.pagePath;
 		next();
 	});
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('editfile', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('edit-page-dd', 'call the read action for the default connector container', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([
 			[bugUser], // these need to modify global variables
 			[createClient],
-			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
+			[readPage], // we will call readDefaultContainer when we pick a site
+			// edit page
 			[report, 'all our tasks are done'],
 			[done] // when we get finished doing our thing we let grunt know we are done
 		]);
