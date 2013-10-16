@@ -100,6 +100,7 @@ function handleError(err, caller) {
 
 function readPage() {
 	client.read(soapArgs, function (err, response) {
+		var increment;
 		if (err) {
 			grunt.log.writeln('Error reading page: ' + err.message);
 			die();
@@ -109,10 +110,19 @@ function readPage() {
 			if (response.readReturn.success.toString() === 'true') {
 //				grunt.log.writeflags(response.readReturn.asset.page);
 //				console.log(response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text);
-				response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text += '0';
+				increment = response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text;
+				increment = parseInt(increment, 10);
+				if (isNaN(increment)) {
+					increment = '1';
+				} else {
+					increment += 1;
+					increment = increment.toString();
+				}
+				response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text = increment;
 				delete soapArgs.identifier;
 				soapArgs.asset = {}
 				soapArgs.asset.page = response.readReturn.asset.page;
+				soapArgs.asset.page.metadata.displayName = '';
 /*
 				delete soapArgs.asset.page.metadata.endDate;
 				delete soapArgs.asset.page.metadata.reviewDate;
