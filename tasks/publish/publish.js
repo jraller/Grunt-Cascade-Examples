@@ -2,7 +2,58 @@
 
 'use strict';
 
+/*
+ * For this example we set up to publish an entire site
+ * in addition to getting username, password, and site name we will need to interrogate the server for destinations that we might publish to.
+ * This will allow us to demonstrate branching logic using next()
+ */
 
+/*
+var soapArgsForpublish = {
+  authentication: {
+    password: '',  // xsd:string
+    username: ''  // xsd:string
+  },
+  publishInformation: {
+    // Identifier of the asset being published REQUIRED
+    identifier: {
+      // When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin. One is REQUIRED
+      id: '',  // xsd:string
+      // Path works only for non-recycled assets
+      path: {
+        // When reading a site, the "path" element should be populated with the site's name
+        path: '',  // xsd:string
+        // NOT REQUIRED
+        siteId: '',  // xsd:string nillable
+        siteName: ''  // xsd:string nillable
+      },
+      type: '',  //  one of: 'assetfactory', 'assetfactorycontainer', 'block', 'block_FEED', 'block_INDEX', 'block_TEXT', 'block_XHTML_DATADEFINITION', 'block_XML', 'block_TWITTER_FEED', 'connectorcontainer', 'twitterconnector', 'facebookconnector', 'wordpressconnector', 'googleanalyticsconnector', 'contenttype', 'contenttypecontainer', 'destination', 'file', 'folder', 'group', 'message', 'metadataset', 'metadatasetcontainer', 'page', 'pageconfigurationset', 'pageconfiguration', 'pageregion', 'pageconfigurationsetcontainer', 'publishset', 'publishsetcontainer', 'reference', 'role', 'datadefinition', 'datadefinitioncontainer', 'format', 'format_XSLT', 'format_SCRIPT', 'site', 'sitedestinationcontainer', 'symlink', 'target', 'template', 'transport', 'transport_fs', 'transport_ftp', 'transport_db', 'transportcontainer', 'user', 'workflow', 'workflowdefinition', 'workflowdefinitioncontainer' 
+      // NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+      recycled: 'false'  // xsd:boolean
+    },
+    // This field is Ignored when identifier (above) points to a Destination Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set or Target) *will* respect the Destinations supplied here (this is an inconsistency between the UI and web services). Supplying an empty set of identifiers will publish to all Destinations that are enabled and applicable for the user making the web services call.
+    destinations: {
+      assetIdentifier: [{
+        // When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin. One is REQUIRED
+        id: '',  // xsd:string
+        // Path works only for non-recycled assets
+        path: {
+          // When reading a site, the "path" element should be populated with the site's name
+          path: '',  // xsd:string
+          // NOT REQUIRED
+          siteId: '',  // xsd:string nillable
+          siteName: ''  // xsd:string nillable
+        },
+        type: '',  //  one of: 'assetfactory', 'assetfactorycontainer', 'block', 'block_FEED', 'block_INDEX', 'block_TEXT', 'block_XHTML_DATADEFINITION', 'block_XML', 'block_TWITTER_FEED', 'connectorcontainer', 'twitterconnector', 'facebookconnector', 'wordpressconnector', 'googleanalyticsconnector', 'contenttype', 'contenttypecontainer', 'destination', 'file', 'folder', 'group', 'message', 'metadataset', 'metadatasetcontainer', 'page', 'pageconfigurationset', 'pageconfiguration', 'pageregion', 'pageconfigurationsetcontainer', 'publishset', 'publishsetcontainer', 'reference', 'role', 'datadefinition', 'datadefinitioncontainer', 'format', 'format_XSLT', 'format_SCRIPT', 'site', 'sitedestinationcontainer', 'symlink', 'target', 'template', 'transport', 'transport_fs', 'transport_ftp', 'transport_db', 'transportcontainer', 'user', 'workflow', 'workflowdefinition', 'workflowdefinitioncontainer' 
+        /* NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+        recycled: 'false'  // xsd:boolean
+      }]
+    },
+    /* Similar to the GUI - you can choose to unpublish the asset instead of publishing it. Not required. Default: false
+    unpublish: 'false'  // xsd:boolean nillable
+  }
+};
+*/
 
 
 /*
