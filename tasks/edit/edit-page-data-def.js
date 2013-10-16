@@ -108,8 +108,6 @@ function readPage() {
 		} else {
 			grunt.log.writeln('page returned:');
 			if (response.readReturn.success.toString() === 'true') {
-//				grunt.log.writeflags(response.readReturn.asset.page);
-//				console.log(response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text);
 				increment = response.readReturn.asset.page.structuredData.structuredDataNodes.structuredDataNode[0].text;
 				increment = parseInt(increment, 10);
 				if (isNaN(increment)) {
@@ -123,21 +121,10 @@ function readPage() {
 				soapArgs.asset = {}
 				soapArgs.asset.page = response.readReturn.asset.page;
 				soapArgs.asset.page.metadata.displayName = '';
-/*
-				delete soapArgs.asset.page.metadata.endDate;
-				delete soapArgs.asset.page.metadata.reviewDate;
-				delete soapArgs.asset.page.metadata.startDate;
-				delete soapArgs.asset.page.lastPublishedDate;
-*/		
-//				grunt.log.writeflags(soapArgs);
-
 				grunt.log.writeln('pre-edit');
 				client.edit(soapArgs, function (err, response) {
 					if (err) {
 						grunt.log.writeln('Error editing page: ' + err.message);
-
-//						grunt.log.writeln(client.lastRequest); //.replace(/>/g, '>\n')
-
 						die();
 						next(done);						
 					} else {
