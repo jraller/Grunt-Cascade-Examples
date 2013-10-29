@@ -4,8 +4,6 @@
 
 /*
 
-REWRITE
-
 */
 
 var grunt = {},
@@ -19,13 +17,10 @@ var grunt = {},
 			password: '',
 			username: ''
 		},
-		identifier: {
-			path: {
-				path: '',
-				siteName: ''
-			},
-			type: 'connectorcontainer',
-			recycled: 'false'
+		searchInformation: {
+			matchType: 'match-any',
+			assetName: '*',
+			searchUsers: 'true'
 		}
 	},
 	questions = [
@@ -39,17 +34,6 @@ var grunt = {},
 			type: 'password',
 			name: 'password',
 			message: 'Password: '
-		},
-		{
-			type: 'input',
-			name: 'siteName',
-			message: 'Sitename: '
-		},
-		{
-			type: 'input',
-			name: 'connectorContainerName',
-			message: 'connector folder name: ',
-			'default': '/'
 		}
 	];
 
@@ -101,27 +85,23 @@ function handleError(err, caller) {
 	]);
 }
 
-function readConnectorContainer() {
-	client.read(soapArgs, function (err, response) {
+function searchUsers() {
+	client.search(soapArgs, function (err, response) {
 		if (err) {
-			grunt.log.writeln('Error finding connector container: ' + err.message);
+			grunt.log.writeln('Error with search: ' + err.message);
 			die();
 			next(done);
 		} else {
-			grunt.log.writeln('connector containers returned:');
-			if (response.readReturn.success.toString() === 'true') {
-				grunt.log.writeln('connector containers named ' + response.readReturn.asset.connectorContainer.name);
-				if (response.readReturn.asset.connectorContainer.children && response.readReturn.asset.connectorContainer.children.child) {
-					if (!Array.isArray(response.readReturn.asset.connectorContainer.children.child)) {
-						response.readReturn.asset.connectorContainer.children.child = [response.readReturn.asset.connectorContainer.children.child];
-					}
-					response.readReturn.asset.connectorContainer.children.child.forEach(function (child) {
-						grunt.log.writeln('connector named ' + child.path.path + ' of type ' + child.type);
-					});
-				} else {
-					grunt.log.writeln('it was empty of connectors');
+			if (response.searchReturn.success.toString() === 'true') {
+				if (!Array.isArray(response.searchReturn.matches.match)) {
+					response.searchReturn.matches.match = [response.searchReturn.matches.match];
 				}
-			} else {
+				grunt.log.writeln(response.searchReturn.matches.match.length + ' users found');
+				response.searchReturn.matches.match.forEach(function (user) {
+					grunt.log.writeln(user.id);
+					// or queue up users to read to get their full information here.
+				});
+				} else {
 				grunt.log.writeln(response.readReturn.message);
 			}
 		}
@@ -136,7 +116,7 @@ function createClient() {
 			handleError(err, 'createClient');
 		} else {
 			grunt.log.writeln('Client created');
-			client = clientObj; // here we save the client out as a global object that survives between callbacks
+			client = clientObj;
 			next();
 		}
 	});
@@ -146,22 +126,20 @@ function bugUser() {
 	inquirer.prompt(questions, function (answers) {
 		soapArgs.authentication.username = answers.username;
 		soapArgs.authentication.password = answers.password;
-		soapArgs.identifier.path.siteName = answers.siteName;
-		soapArgs.identifier.path.path = answers.connectorContainerName;
 		next();
 	});
 }
 
 module.exports = function (gruntObj) {
-	gruntObj.registerTask('searchuser', 'call the read action for the default connector container', function () {
+	gruntObj.registerTask('searchuser', 'list all user ids', function () {
 		grunt = gruntObj;
 		done = this.async();
 		next([
-			[bugUser], // these need to modify global variables
+			[bugUser],
 			[createClient],
-			[readConnectorContainer], // we will call readDefaultContainer when we pick a site
+			[searchUsers],
 			[report, 'all our tasks are done'],
-			[done] // when we get finished doing our thing we let grunt know we are done
+			[done]
 		]);
 	});
 };
