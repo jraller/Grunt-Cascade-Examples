@@ -4,14 +4,16 @@
   "description": "a set of examples and test code for accessing Cascade Server Web Services in NodeJS",
   "main": "Gruntfile.js",
   "dependencies": {
-    "grunt": "~0.4.1",
-    "soap-cascade": ">=0.1.0",
-    "inquirer": "~0.2.5",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-jshint": "~0.6.3"
+    "grunt": "~0.4.5",
+    "soap-cascade": ">=0.1.3",
+    "inquirer": "~0.8.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-jshint": "~0.11.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "load-grunt-tasks": "^3.1.0"
+  },
   "scripts": {
     "test": "grunt test"
   },

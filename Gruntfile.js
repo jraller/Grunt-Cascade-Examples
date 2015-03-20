@@ -3,6 +3,8 @@
 'use strict';
 
 module.exports = function (grunt) {
+    // Load all grunt tasks
+    require('load-grunt-tasks')(grunt, {pattern: ['grunt-*', '!grunt-build-lifecycle']});
 
     // Project configuration.
     grunt.initConfig({
@@ -35,37 +37,32 @@ module.exports = function (grunt) {
         }
     });
 
-    // These plugins provide necessary tasks.
-    grunt.loadNpmTasks('grunt-contrib-nodeunit');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
 	grunt.loadTasks('tasks');
-	grunt.loadTasks('tasks/listSites');
+	// grunt.loadTasks('tasks/listSites');
 	grunt.loadTasks('tasks/read');
-	grunt.loadTasks('tasks/listMessages');
-	grunt.loadTasks('tasks/markMessage');
-	grunt.loadTasks('tasks/deleteMessage');
-	grunt.loadTasks('tasks/sendMessage');
-	grunt.loadTasks('tasks/delete');
-	grunt.loadTasks('tasks/publish');
-	grunt.loadTasks('tasks/edit');
-	grunt.loadTasks('tasks/batch');
-	grunt.loadTasks('tasks/copy');
-	grunt.loadTasks('tasks/move');
-	grunt.loadTasks('tasks/search');
-	grunt.loadTasks('tasks/siteCopy');
-//	grunt.loadTasks('tasks/checkIn');
-//	grunt.loadTasks('tasks/checkOut');
-//	grunt.loadTasks('tasks/create');
-//	grunt.loadTasks('tasks/readAccessRights');
-//	grunt.loadTasks('tasks/editAccessRights');
-//	grunt.loadTasks('tasks/editWorkflowSettings');
-//	grunt.loadTasks('tasks/listSubscribers');
-//	grunt.loadTasks('tasks/performWorkflowTransition');
-//	grunt.loadTasks('tasks/readAudits');
-//	grunt.loadTasks('tasks/readWorkflowInformation');
-//	grunt.loadTasks('tasks/readWorkflowSettings');
+	// grunt.loadTasks('tasks/listMessages');
+	// grunt.loadTasks('tasks/markMessage');
+	// grunt.loadTasks('tasks/deleteMessage');
+	// grunt.loadTasks('tasks/sendMessage');
+	// grunt.loadTasks('tasks/delete');
+	// grunt.loadTasks('tasks/publish');
+	// grunt.loadTasks('tasks/edit');
+	// grunt.loadTasks('tasks/batch');
+	// grunt.loadTasks('tasks/copy');
+	// grunt.loadTasks('tasks/move');
+	// grunt.loadTasks('tasks/search');
+	// grunt.loadTasks('tasks/siteCopy');
+	// grunt.loadTasks('tasks/checkIn');
+	// grunt.loadTasks('tasks/checkOut');
+	// grunt.loadTasks('tasks/create');
+	// grunt.loadTasks('tasks/readAccessRights');
+	// grunt.loadTasks('tasks/editAccessRights');
+	// grunt.loadTasks('tasks/editWorkflowSettings');
+	// grunt.loadTasks('tasks/listSubscribers');
+	// grunt.loadTasks('tasks/performWorkflowTransition');
+	// grunt.loadTasks('tasks/readAudits');
+	// grunt.loadTasks('tasks/readWorkflowInformation');
+	// grunt.loadTasks('tasks/readWorkflowSettings');
 
     // Default task.
     grunt.registerTask('default', ['jshint:all']); //, 'nodeunit'
